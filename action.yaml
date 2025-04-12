@@ -20,7 +20,7 @@ inputs:
 runs:
     using: "composite"
     steps:
-        - name: Retrieve application id
+      - name: Retrieve application id
         id: retrieve-application-id
         run: |
           PROJECT_LIST=$(curl -X 'GET' 'https://${{ secrets.DOKPLOY_HOST }}/api/project.all' -H 'accept: application/json' -H 'Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}')
