@@ -1,4 +1,4 @@
-name: "Dokploy Deploy Action"
+name: "TelesalesCoach's Dokploy Deploy Action"
 description: "Deploy an application to Dokploy"
 author: "jmischler72"
 inputs:
