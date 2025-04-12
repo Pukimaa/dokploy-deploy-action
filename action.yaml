@@ -2,14 +2,9 @@ name: "TelesalesCoach's Dokploy Deploy Action"
 description: "Deploy an application to Dokploy"
 author: "Pukimaa"
 inputs:
-    APPLICATION_NAME:
+    APPLICATION_ID:
         description: "The name of the application to deploy"
         required: true
-        default: "application"
-    PROJECT_NAME:
-        description: "The name of the project to deploy"
-        required: true
-        default: "project"
     DOKPLOY_HOST:
         description: "The host of the Dokploy instance"
         required: true
@@ -20,14 +15,6 @@ inputs:
 runs:
     using: "composite"
     steps:
-      - name: Retrieve application id
-        id: retrieve-application-id
-        shell: bash
-        run: |
-          PROJECT_LIST=$(curl -X 'GET' 'https://${{ inputs.DOKPLOY_HOST }}/api/project.all' -H 'accept: application/json' -H 'Authorization: Bearer ${{ inputs.DOKPLOY_TOKEN }}')
-          echo "::add-mask::$PROJECT_LIST"
-          echo "APPLICATION_ID=$(echo $PROJECT_LIST | jq -r '.[] | select(.name == "${{ inputs.PROJECT_NAME }}") | .applications[] | select(.name == "${{ inputs.APPLICATION_NAME }}") | .applicationId')" >> "$GITHUB_OUTPUT"
-
       - name: Deploy to Dokploy
         shell: bash
         run: |
@@ -35,8 +22,10 @@ runs:
             'https://${{ inputs.DOKPLOY_HOST }}/api/application.deploy' \
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
-            -H "Authorization: Bearer ${{ inputs.DOKPLOY_TOKEN }}" \
-            -d '{ "applicationId": "${{ steps.retrieve-application-id.outputs.APPLICATION_ID }}" }'
+            -H 'x-api-key: ${{ inputs.DOKPLOY_TOKEN }}' \
+            -d '{
+              "applicationId": "${{ inputs.APPLICATION_ID }}"
+          }'
 
 branding:
   icon: "box"
