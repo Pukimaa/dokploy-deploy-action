@@ -23,17 +23,17 @@ runs:
       - name: Retrieve application id
         id: retrieve-application-id
         run: |
-          PROJECT_LIST=$(curl -X 'GET' 'https://${{ secrets.DOKPLOY_HOST }}/api/project.all' -H 'accept: application/json' -H 'Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}')
+          PROJECT_LIST=$(curl -X 'GET' 'https://${{ inputs.DOKPLOY_HOST }}/api/project.all' -H 'accept: application/json' -H 'Authorization: Bearer ${{ inputs.DOKPLOY_TOKEN }}')
           echo "::add-mask::$PROJECT_LIST"
           echo "APPLICATION_ID=$(echo $PROJECT_LIST | jq -r '.[] | select(.name == "${{ inputs.PROJECT_NAME }}") | .applications[] | select(.name == "${{ inputs.APPLICATION_NAME }}") | .applicationId')" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Dokploy
         run: |
           curl -X 'POST' \
-            'https://${{ secrets.DOKPLOY_HOST }}/api/application.deploy' \
+            'https://${{ inputs.DOKPLOY_HOST }}/api/application.deploy' \
             -H 'accept: application/json' \
             -H 'Content-Type: application/json' \
-            -H "Authorization: Bearer ${{ secrets.DOKPLOY_TOKEN }}" \
+            -H "Authorization: Bearer ${{ inputs.DOKPLOY_TOKEN }}" \
             -d '{ "applicationId": "${{ steps.retrieve-application-id.outputs.APPLICATION_ID }}" }'
 
 branding:
