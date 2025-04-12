@@ -1,6 +1,6 @@
 name: "TelesalesCoach's Dokploy Deploy Action"
 description: "Deploy an application to Dokploy"
-author: "jmischler72"
+author: "Pukimaa"
 inputs:
     APPLICATION_NAME:
         description: "The name of the application to deploy"
@@ -22,12 +22,14 @@ runs:
     steps:
       - name: Retrieve application id
         id: retrieve-application-id
+        shell: bash
         run: |
           PROJECT_LIST=$(curl -X 'GET' 'https://${{ inputs.DOKPLOY_HOST }}/api/project.all' -H 'accept: application/json' -H 'Authorization: Bearer ${{ inputs.DOKPLOY_TOKEN }}')
           echo "::add-mask::$PROJECT_LIST"
           echo "APPLICATION_ID=$(echo $PROJECT_LIST | jq -r '.[] | select(.name == "${{ inputs.PROJECT_NAME }}") | .applications[] | select(.name == "${{ inputs.APPLICATION_NAME }}") | .applicationId')" >> "$GITHUB_OUTPUT"
 
       - name: Deploy to Dokploy
+        shell: bash
         run: |
           curl -X 'POST' \
             'https://${{ inputs.DOKPLOY_HOST }}/api/application.deploy' \
