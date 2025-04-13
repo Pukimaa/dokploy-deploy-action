@@ -1,9 +1,9 @@
-name: "TelesalesCoach's Dokploy Deploy Action"
-description: "Deploy an application to Dokploy"
+name: "Dokploy Simple Deploy"
+description: "Deploy an application to Dokploy with the most minimal necessary inputs"
 author: "Pukimaa"
 inputs:
     APPLICATION_ID:
-        description: "The name of the application to deploy"
+        description: "The ID of the application to deploy"
         required: true
     DOKPLOY_HOST:
         description: "The host of the Dokploy instance"
@@ -26,7 +26,6 @@ runs:
             -d '{
               "applicationId": "${{ inputs.APPLICATION_ID }}"
           }'
-
 branding:
-  icon: "box"
-  color: "gray-dark"
+    icon: 'upload-cloud'
+    color: 'blue'
