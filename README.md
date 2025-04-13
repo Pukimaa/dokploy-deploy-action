@@ -1,7 +1,7 @@
-# Dokploy Deploy Action
+# Dokploy Simple Deploy Action
 
 This repository contains GitHub Actions for triggering deployments of applications in Dokploy. 
-This is useful if you want to trigger it after a build/push of your docker image in your CI
+This is useful if you want to trigger it after a build/push of your docker image in your CI.
 
 ## Features
 
@@ -22,10 +22,9 @@ on:
 
 jobs:
   dokploy_deploy:
-    uses: jmischler72/dokploy-deploy-actions@main
+    uses: Pukimaa/dokploy-deploy-action@2.1.0
     with:
-      PROJECT_NAME: project-name
-      APPLICATION_NAME: application-name
+      APPLICATION_ID: cG-ttW6-r-HBWy1XC4Qja
       DOKPLOY_HOST: ${{ secrets.DOKPLOY_HOST }}
       DOKPLOY_TOKEN: ${{ secrets.DOKPLOY_TOKEN }}
     
@@ -33,7 +32,6 @@ jobs:
 
 ## Inputs
 
-- `PROJECT_NAME`: The name of the project in which the application you want to deploy is in
-- `APPLICATION_NAME`: The name of the application you want to deploy
-- `DOKPLOY_HOST`: The host ip or domain of your dokploy instance.
-- `DOKPLOY_TOKEN`: Create an API token in your profile settings on Dokploy
+- `APPLICATION_ID`: The ID of the application you want to trigger the deploy for. If you open up the application in the Dokploy Dashboard, it's the last ID in the URL.
+- `DOKPLOY_HOST`: The host ip or domain of your dokploy instance. (`example.com`)
+- `DOKPLOY_TOKEN`: Create an API token in your profile settings on Dokploy.
